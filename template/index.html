@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+</head>
+<body>
+    <form method="POST" action="addData">
+    {% csrf_token %}        <!-- cross site request forgery token -->
+       <h3 class="page-header text-primary text-center">Registration Form</h3>
+         <div class="mb-3">
+          <label for="name" class="form-label">Name</label>
+          <input type="text" class="form-control"  name="name" placeholder="Enter your name">
+        </div>
+        <div class="mb-3">
+            <label for="age" class="form-label">Age</label>
+            <input type="text" class="form-control" name="age" placeholder="Enter your Age">
+        </div>
+        <div class="mb-3">
+            <label for="city" class="form-label">City</label>
+            <input type="text" class="form-control" name="city" placeholder="Enter your email">
+
+        </div>
+        <div class="mb-3">
+            <label for="address" class="form-label">Address</label>
+            <input type="text" class="form-control" name="address" placeholder="Enter your address">
+
+        </div>
+        <div class="mb-3 " >
+            <input type="submit" value="Register" name="submit" class="btn btn-primary">
+            <input type="reset" value="cancel" name="submit" class="btn btn-danger">
+        </div>
+    </form>
+    <div class="col-md-6">
+        <h3 class="page-header text-center text-primary">View Details</h3>
+        <table class="table table-bordered">
+            <tr>
+                <th>S.no</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>City</th>
+                <th>Addresss</th>
+                <th>Update</th>
+                <th>Delete</th>
+            </tr>
+            {% for i in Data %}
+            <tr>
+                <td>{{ i.id }}</td>
+                <td>{{ i.name }}</td>
+                <td>{{ i.age }}</td>
+                <td>{{ i.city }}</td>
+                <td>{{ i.address }}</td>
+                <td><a href="updateData/{{ i.id }}" class="btn btn-primary">update</a></td>
+                <td><a href="deleteData/{{ i.id }}" class="btn btn-danger">delete</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+
+    </div>
+</body>
+</html>
