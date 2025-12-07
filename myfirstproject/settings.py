@@ -12,28 +12,20 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url
 
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # -------------------------------
 # SECURITY SETTINGS FOR RENDER
 # -------------------------------
 SECRET_KEY = os.environ.get("SECRET_KEY", "development-secret-key")
 
-DEBUG = True if os.environ.get("DEBUG", "True") == "True" else False
+DEBUG = os.environ.get("DEBUG", "True") == "True"
 
-
-# Render provides the domain automatically
 ALLOWED_HOSTS = ['*']
 
-
-
-
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -43,13 +35,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'firstapp',
     'django_bootstrap5',
-
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    
-    'whitenoise.middleware.WhiteNoiseMiddleware',   # ✔ IMPORTANT for Render
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -81,17 +72,15 @@ WSGI_APPLICATION = 'myfirstproject.wsgi.application'
 # -------------------------------
 # DATABASE SETUP FOR RENDER
 # -------------------------------
-
-# Use DATABASE_URL from Render → falls back to SQLite locally
-import dj_database_url
 DATABASES = {
     'default': dj_database_url.config(default='sqlite:///db.sqlite3')
 }
 
+# Keep DB connections alive (Render requirement)
+DATABASES['default']['CONN_MAX_AGE'] = 600
+
 
 # Password validation
-# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -109,27 +98,16 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # Internationalization
-# https://docs.djangoproject.com/en/4.2/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
-
-STATIC_URL = 'static/'
-STATICFILES_DIRS =[os.path.join(BASE_DIR,'static')]
-# Where collectstatic will store files
+# Static files
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
