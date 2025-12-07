@@ -23,10 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # -------------------------------
 SECRET_KEY = os.environ.get("SECRET_KEY", "development-secret-key")
 
-DEBUG = os.environ.get("DEBUG", "False") == "True"
+DEBUG = False
+
 
 # Render provides the domain automatically
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost").split(",")
+ALLOWED_HOSTS = ["djangoproject-car6.onrender.com", "localhost"]
+
 
 
 
@@ -46,7 +48,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-     "whitenoise.middleware.WhiteNoiseMiddleware",   # ✔ IMPORTANT for Render
+    'whitenoise.runserver_nostatic',
+    'whitenoise.middleware.WhiteNoiseMiddleware',   # ✔ IMPORTANT for Render
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
