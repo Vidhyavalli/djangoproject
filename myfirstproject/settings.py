@@ -23,11 +23,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # -------------------------------
 SECRET_KEY = os.environ.get("SECRET_KEY", "development-secret-key")
 
-DEBUG = False
+DEBUG = True if os.environ.get("DEBUG", "True") == "True" else False
 
 
 # Render provides the domain automatically
-ALLOWED_HOSTS = ["djangoproject-car6.onrender.com", "localhost"]
+ALLOWED_HOSTS = ['*']
 
 
 
